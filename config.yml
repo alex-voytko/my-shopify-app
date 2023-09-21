@@ -1,0 +1,6 @@
+development:
+  password: shptka_b6fea6fe6ed2c8e97387734c36b62d01
+  theme_id: "160464994623"
+  store: my-awesome-all-in-app.myshopify.com
+  ignore_files:
+    - settings_data.json
