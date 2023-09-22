@@ -1,0 +1,49 @@
+<section class="featured-products">
+    <h2>{{ section.settings.section_title }}</h2>
+    <ul>
+        {% for product in collections.featured.products %}
+            <li>
+                <a href="{{ product.url }}">{{ product.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+<style>
+    .featured-products {
+        font-family: Arial;
+        font-size: 42px;
+    }
+</style>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    {
+      "type": "color",
+      "label": "Background-color",
+      "id": "bg-color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "label": "Title",
+      "id": "section_title",
+      "default": "Featured Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products",
+      "category": "Custom Sections"
+    }
+  ],
+  "blocks": []
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

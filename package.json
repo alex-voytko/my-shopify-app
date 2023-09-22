@@ -1,0 +1,20 @@
+{
+  "name": "my-shopify-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "download": "theme download --password=shptka_b6fea6fe6ed2c8e97387734c36b62d01 --store=my-awesome-all-in-app.myshopify.com --themeid=160464994623"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex-voytko/my-shopify-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alex-voytko/my-shopify-app/issues"
+  },
+  "homepage": "https://github.com/alex-voytko/my-shopify-app#readme"
+}
