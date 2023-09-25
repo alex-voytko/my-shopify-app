@@ -23,6 +23,7 @@ class CartItems extends HTMLElement {
     }, ON_CHANGE_DEBOUNCE_TIMER);
 
     this.addEventListener('change', debouncedOnChange.bind(this));
+    this.updateFeaturedProducts();
   }
 
   cartUpdateUnsubscriber = undefined;
@@ -176,7 +177,23 @@ class CartItems extends HTMLElement {
       })
       .finally(() => {
         this.disableLoading(line);
+        this.updateFeaturedProducts();
       });
+  }
+  
+  updateFeaturedProducts() {
+    const cartItemIds = [];
+    document.querySelectorAll('tr.cart-item').forEach(item => {
+      cartItemIds.push(item.dataset.productId);
+    });
+
+    document.querySelectorAll('.featured-product-item').forEach(el => {
+      if (cartItemIds.includes(el.id)) {
+        el.classList.add('hidden');
+      } else {
+        el.classList.remove('hidden');
+      }
+    });
   }
 
   updateLiveRegions(line, message) {

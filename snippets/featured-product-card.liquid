@@ -1,0 +1,52 @@
+{% liquid
+    assign has_variants = false
+    if product.variants.size > 1
+        assign has_variants = true
+    endif
+%}
+
+<li class="featured-product-item"
+    id="{{ product.id }}"
+    data-product-url="{{ product.url }}"
+    data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+>
+    <a href="{{ product.url }}">
+        <img
+            src="{{ product.featured_image | img_url: 'large' }}"
+            loading="lazy"
+            alt="{{ product.title | escape }}"
+            class="product-image"
+        >
+    </a>
+    <div>
+        <p class="product-title">{{ product.title }}</p>
+        <div class="variant-discount-container">
+            {% if has_variants %}
+                <div class="select-wrapper">
+                    <select
+                        name="select-variant"
+                        data-selected-id="{{ product.selected_or_first_available_variant.id }}"
+                        data-selected-title="{{ product.selected_or_first_available_variant.title }}"
+                    >
+                        {% for variant in product.variants %}
+                            <option value="value1" data-id="{{ variant.id }}">{{ variant.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+            {% if product.compare_at_price > product.price %}
+                <div class="discount-container">
+                    {% assign diff = product.compare_at_price | minus: product.price %}
+                    {% assign compare_price_float = product.compare_at_price | times: 1.0 %}
+                    {% assign diff = diff | divided_by: compare_price_float %}
+                    {% assign diff = diff | times: 100.0 %}
+                    {% assign diff = diff | round %}
+                    <p class="discount-text">-{{ diff }}%</p>
+                </div>
+            {% endif %}
+        </div>
+        <button class="cta-btn" data-product-id="{{ product.id }}">
+            Add to cart - {{ product.selected_or_first_available_variant.price | money }}
+        </button>
+    </div>
+</li>

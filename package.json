@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "download": "theme download --password=shptka_b6fea6fe6ed2c8e97387734c36b62d01 --store=my-awesome-all-in-app.myshopify.com --themeid=160464994623"
+    "get": "theme download --password=shptka_b6fea6fe6ed2c8e97387734c36b62d01 --store=my-awesome-all-in-app.myshopify.com --themeid=160464994623"
   },
   "repository": {
     "type": "git",

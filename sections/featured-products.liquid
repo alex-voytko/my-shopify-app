@@ -1,17 +1,184 @@
-<section class="featured-products">
-    <h2>{{ section.settings.section_title }}</h2>
-    <ul>
-        {% for product in collections.featured.products %}
-            <li>
-                <a href="{{ product.url }}">{{ product.title }}</a>
-            </li>
+{% liquid
+    assign collection_products = collections["featured-products"].products
+    if section.settings.collection != blank
+        assign collection_products = section.settings.collection.products
+    endif
+%}
+
+<section class="featured-products" id="{{ section.id }}">
+    <h2 class="section-title">{{ section.settings.section_title }}</h2>
+    <ul class="product-list">
+        {% for product in collection_products %}
+            {% comment %} First render multiple-variant products {% endcomment %}
+            {% if product.variants.size > 1 %}
+                {% render 'featured-product-card', product: product %}
+            {% endif %}
+        {% endfor %}
+        {% for product in collection_products %}
+            {% comment %} Than render single-variant products {% endcomment %}
+            {% if product.variants.size == 1 %}
+                {% render 'featured-product-card', product: product %}
+            {% endif %}
         {% endfor %}
     </ul>
+    <script src="{{ 'featured-products.js' | asset_url }}"></script>
 </section>
+
 <style>
+    @font-face {
+        font-family: 'Arial';
+        src: url('./assets/ArialMT.ttf') format('truetype');
+    }
+    ul, li {
+        list-style: none;
+        padding: 0;
+    }
     .featured-products {
-        font-family: Arial;
+        background-color: {{ section.settings.bg_color }};
+        padding-top: 80px;
+        padding-bottom: 140px;
+    }
+    .featured-products .section-title {
+        font-family: 'Arial', sans-serif;
+        font-weight: 700;
         font-size: 42px;
+        color: {{ section.settings.title_color }};
+        text-align: center;
+    }
+    @media screen and (max-width: 1023px) {
+        .featured-products .section-title {
+            font-size: 26px;
+        }
+    }
+    .featured-products .featured-product-item > a {
+        width: inherit;
+        height: inherit;
+        display: flex;
+        justify-content: center;
+    }
+    .featured-products .featured-product-item .product-img {
+        width: 520px;
+        max-width: 520px;
+    }
+    .featured-products .product-list {
+        display: flex;
+        max-width: 1100px;
+        flex-wrap: wrap;
+        row-gap: 60px;
+        column-gap: 40px;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    .featured-products .product-title {
+        font-family: 'Arial', sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #656874;
+        text-align: center;
+    }
+    .featured-products .variant-discount-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 11px;
+    }
+    .featured-products select[name="select-variant"] {
+        width: 99px;
+        height: 40px;
+        border: none;
+        border-radius: 40px;
+        background-color: rgba(70, 75, 144, 0.1);
+        padding: 7px 40px 7px 17px;
+        font-family: 'Arial', sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 26px;
+        color: #464B90;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        cursor: pointer;
+        outline: none;
+    }
+    .featured-products select[name="select-variant"]::-ms-expand {
+        display: none;
+    }
+    .featured-products select[name="select-variant"]:focus {
+        outline: none;
+        box-shadow: none;
+    }
+    .featured-products .select-wrapper {
+        width: fit-content;
+        height: fit-content;
+        position: relative;
+    }
+    .featured-products .select-wrapper::after {
+        content: '';
+        position: absolute;
+        width: 12px;
+        height: 6px;
+        background-image: url({{ 'icon-dropdown.svg' | asset_url }});
+        background-repeat: no-repeat;
+        top: 50%;
+        right: 23px;
+        transform: translateY(-50%);
+        z-index: 1;
+        pointer-events: none;
+    }
+    .featured-products .cta-btn {
+        width: 285px;
+        height: 60px;
+        display: block;
+        margin: 19px auto 0;
+        border: none;
+        background-color: #464B90;
+        color: white;
+        padding: 0;
+        border-radius: 40px;
+        font-family: 'Arial', sans-serif;
+        font-weight: 700;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .featured-products .discount-container {
+        display: flex;
+        height: 40px;
+        border-radius: 30px;
+        background-color: rgba(235, 87, 87, 0.1);
+        margin-left: 7px;
+        padding: 0 16px;
+        align-items: center;
+    }
+    .featured-products .discount-container .discount-text {
+        font-family: 'Arial', sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        color: #EB5757;
+        margin: 0;
+    }
+    @media screen and (max-width: 1023px) {
+        .featured-products .product-list {
+            column-gap: 0;
+            justify-content: space-between;
+        }
+        .featured-products .featured-product-item {
+            width: 50%;
+        }
+        .featured-products .featured-product-item > a {
+            width: 100%;
+        }
+        .featured-products .featured-product-item .product-image {
+            width: inherit;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+    }
+    @media screen and (max-width: 767px) {
+        .featured-products .product-list {
+            justify-content: center;
+        }
+        .featured-products .featured-product-item {
+            width: 100%;
+        }
     }
 </style>
 
@@ -22,14 +189,25 @@
     {
       "type": "color",
       "label": "Background-color",
-      "id": "bg-color",
+      "id": "bg_color",
       "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "label": "Title-color",
+      "id": "title_color",
+      "default": "#656874"
     },
     {
       "type": "text",
       "label": "Title",
       "id": "section_title",
       "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
     }
   ],
   "presets": [
@@ -41,9 +219,3 @@
   "blocks": []
 }
 {% endschema %}
-
-{% stylesheet %}
-{% endstylesheet %}
-
-{% javascript %}
-{% endjavascript %}
